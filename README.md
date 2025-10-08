@@ -1,6 +1,6 @@
 # TechChallenge - API 
 
-[Documentação da API](https://alealencarr.github.io/TechChallenge-app-api/) 
+[Documentação completa do projeto](https://alealencarr.github.io/TechChallenge/)
 
 ### Descrição
 Este repositório contém o código-fonte da aplicação principal (API) da lanchonete. Ele é responsável por toda a lógica de negócio, como gestão de produtos, ingredientes, pedidos, clientes, categorias, checkout e comunicação com o banco de dados.
