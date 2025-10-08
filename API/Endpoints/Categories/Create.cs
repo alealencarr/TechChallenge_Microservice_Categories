@@ -31,7 +31,7 @@ namespace API.Endpoints.Categories
                .WithTags("Categories")
                .Produces<ICommandResult<CategorieOutputDto?>>()
                .WithName("Categorie.Create")
-               .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });               
+               ; //.RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" }); //Comentado porque para a fase 3 não terá essa feature               
         }
     }
 }

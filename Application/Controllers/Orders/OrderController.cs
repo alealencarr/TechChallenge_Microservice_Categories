@@ -151,6 +151,11 @@ namespace Application.Controllers.Orders
                 var useCase = CheckoutOrderUseCase.Create(orderGateway, paymentGateway, _fileStorageService);
                 var payment = await useCase.Run(id);
 
+
+                var useCaseOrder = UpdatePaymentOrderUseCase.Create(orderGateway);
+                var paymentOrder = await useCaseOrder.Run(payment.OrderId, payment.Id, EPaymentStatus.Paid, payment.Amount);
+
+
                 return payment is null ? orderPresenter.Error<QrCodeOrderOutputDto?>("Order not found.") : orderPresenter.TransformObjectPayment(payment);
             }
             catch (Exception ex)
