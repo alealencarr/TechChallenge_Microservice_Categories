@@ -2,7 +2,7 @@
 
 # 📚 Documentação & Recursos
 
-- 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge/
+- 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge-app-api/
 
 Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
  
