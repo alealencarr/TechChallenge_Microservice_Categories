@@ -1,49 +1,41 @@
-# 🚀 TechChallenge - HUNGRY 
+# TechChallenge - API  
 
-# 📚 Documentação & Recursos
+[Documentação completa do projeto](https://alealencarr.github.io/TechChallenge/)
 
-- 📄 Documentação da API, Setup de Execução, Diagramas e Download da Collection: https://alealencarr.github.io/TechChallenge/
+### Descrição
+Este repositório contém o código-fonte da aplicação principal (API) da lanchonete. Ele é responsável por toda a lógica de negócio, como gestão de produtos, ingredientes, pedidos, clientes, categorias, checkout e comunicação com o banco de dados.
 
-Sistema completo para gerenciamento de pedidos e operações em uma hamburgueria, utilizando **DDD**, **Clean ARCH** e boas práticas modernas de desenvolvimento backend em .NET.
- 
-## 🧱 Estrutura da Solução
+A aplicação é projetada para ser executada como um contêiner dentro do cluster Azure Kubernetes Service (AKS), garantindo escalabilidade e resiliência.
 
-| TechChallenge
-- ├── API             → Ponto de entrada da aplicação (autenticação)
-- ├── Application     → Casos de uso (Use Cases), Controllers, Gateways, Presenter e Interfaces de Data Sources
-- ├── Shared          → DTOs, Helpers, Results, Requests e Responses
-- ├── Domain          → Entidades, Aggregates, Regras de Negócio (DDD puro)
-- ├── Infrastructure  → Implementações concretas (EF Core, Repositórios, serviços, implementações de Data Sources, etc.)
+### Tecnologias Utilizadas
+.NET 9: Framework principal da aplicação.
 
----
+Docker: Para containerização da aplicação.
 
-## ✨ Tecnologias Utilizadas
+Kubernetes (Manifestos YAML): Para orquestração dos contêineres no AKS. Os manifestos definem os Deployments, Services, Ingress e HPA (Horizontal Pod Autoscaler).
 
-- .NET 9
-- ASP.NET Core
-- Entity Framework Core
-- C# 12
-- Injeção de dependência manual
-- Arquitetura Limpa (Seguida a risca)
-- Domain-Driven Design (DDD)
-- Swagger para documentação
+### Responsabilidades
+Implementar todos os endpoints da lógica de negócio (CRUD de produtos, fluxo de pedidos, etc.).
 
----
+Conectar-se aos serviços de dados (Azure SQL e Azure Blob Storage) para persistir e ler informações.
 
-## ✅ Funcionalidades
+Ser empacotado num Dockerfile para criar uma imagem executável.
 
-- Gerenciamento de **Clientes**, **Produtos**, **Ingredientes**, **Pedidos** e **Categorias**
-- Criação de pedidos com ou sem cliente
-- Montagem de produtos com ou sem ingredientes (ex: lanches personalizados)
-- Pagamento e alteração de status dos pedidos
-- Separação clara de responsabilidades entre camadas
-- Documentação via Swagger/OpenAPI
+Definir os manifestos Kubernetes que descrevem como a aplicação deve ser executada e exposta dentro do cluster.
 
-🧪 API e Swagger
+### Dependências
+O pipeline de CI/CD deste repositório depende da existência da infraestrutura criada pelo TechChallenge-infra-compute, especificamente o Azure Kubernetes Service (AKS) e o Azure Container Registry (ACR).
 
-Após subir a aplicação, acesse a documentação interativa no navegador. Acompanhe também a WIKI.
+### Processo de CI/CD
+O pipeline de CI/CD configurado neste repositório (.github/workflows/deploy.yml) é acionado a cada merge na branch main e executa os seguintes passos:
 
-📄 Licença
+Build da Imagem: Constrói a imagem Docker da aplicação.
+
+Push para o ACR: Envia a nova imagem para o Azure Container Registry.
+
+Deploy no AKS: Aplica os manifestos Kubernetes (kubectl apply), instruindo o AKS a descarregar a nova imagem e a atualizar a aplicação no ar.
+
+### Licença
 
 Este projeto está licenciado sob os termos da licença MIT.  
 Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.

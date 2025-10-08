@@ -29,6 +29,6 @@ internal sealed class Update : IEndpoint
            })
            .WithTags("Ingredients")
            .Produces<ICommandResult<IngredientOutputDto?>>()
-           .WithName("Ingredient.Update").RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" });
+           .WithName("Ingredient.Update"); //.RequireAuthorization(new AuthorizeAttribute { Roles = "Admin,Master" }); //Comentado porque para a fase 3 não terá essa feature
     }
 }
