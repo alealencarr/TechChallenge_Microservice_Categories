@@ -2,12 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-ingress
-  annotations:   
-    kubernetes.io/ingress.class: azure/application-gateway
-    appgw.ingress.kubernetes.io/use-private-ip: "true"
+  annotations:
+    # AGIC - Application Gateway Ingress Controller
+    kubernetes.io/ingress.class: azure/application-gateway    
+    # Health probe na raiz 
+    appgw.ingress.kubernetes.io/health-probe-path: "/"
 spec:
   rules:
-  - host: api.internal.techchallenge 
+  - host: api.internal.techchallenge
     http:
       paths:
       - path: /

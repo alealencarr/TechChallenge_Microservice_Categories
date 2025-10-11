@@ -1,66 +1,105 @@
-# .github/workflows/deploy.yml
-
 name: Build and Deploy API to AKS
 
-# Gatilho: Roda sempre que houver um push ou merge na branch 'main'
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP_NAME }}
+  AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
     steps:
-    # 1. Baixa o código do seu repositório
-    - name: 'Checkout'
-      uses: actions/checkout@v4
+      # 1. Checkout do código
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
 
-    # 2. Autentica no Azure usando o segredo que criamos
-    - name: 'Azure Login'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # 2. Login no Azure
+      - name: 'Azure Login'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  # --- SEÇÃO ALTERADA ABAIXO ---
+      # 3. Login no Azure Container Registry
+      - name: 'Docker Login to ACR'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_LOGIN_SERVER }}
+          username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
+          password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
 
-    # 3. Autentica o Docker no seu Azure Container Registry
-    - name: 'Docker Login to ACR'
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-        username: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
-        password: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}
+      # 4. Build da imagem Docker
+      - name: 'Build Docker image'
+        run: |
+          echo "🐳 Building Docker image..."
+          docker build -t ${{ env.ACR_LOGIN_SERVER }}/lanchonete-api:${{ env.IMAGE_TAG }} .
+          echo "✅ Image built successfully!"
 
-    # 4. Constrói e Tagueia a imagem Docker
-    # Agora estamos usando o comando 'docker build' padrão
-    - name: 'Build and tag Docker image'
-      run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }} .
+      # 5. Push da imagem para o ACR
+      - name: 'Push Docker image to ACR'
+        run: |
+          echo "📦 Pushing image to ACR..."
+          docker push ${{ env.ACR_LOGIN_SERVER }}/lanchonete-api:${{ env.IMAGE_TAG }}
+          echo "✅ Image pushed successfully!"
 
-    # 5. Envia a imagem para o ACR
-    # Agora estamos usando o comando 'docker push' padrão
-    - name: 'Push Docker image to ACR'
-      run: |
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/lanchonete-api:${{ github.sha }}
+      # 6. Configura kubectl para acessar o AKS
+      - name: 'Set AKS context'
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}
 
-    # --- FIM DA SEÇÃO ALTERADA ---
+      # 7. Cria/Atualiza secrets no Kubernetes
+      - name: 'Create/Update Kubernetes secrets'
+        run: |
+          echo "🔐 Creating Kubernetes secrets..."
+          kubectl create secret generic api-secrets \
+            --from-literal=ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
+            --from-literal=AZURE_STORAGE_CONNECTION_STRING='${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}' \
+            --dry-run=client -o yaml | kubectl apply -f -
+          echo "✅ Secrets configured!"
 
-    # 6. Conecta a ferramenta 'kubectl' ao nosso cluster AKS na nuvem
-    - name: 'Set AKS context'
-      uses: azure/aks-set-context@v3
-      with:
-        resource-group: ${{ secrets.RESOURCE_GROUP_NAME }}
-        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+      # 8. Substitui placeholders nos manifestos K8s
+      - name: 'Replace placeholders in manifests'
+        run: |
+          echo "📝 Replacing placeholders in Kubernetes manifests..."
+          find ./k8s -type f -name "*.yaml" -exec sed -i "s|__ACR_LOGIN_SERVER__|${{ env.ACR_LOGIN_SERVER }}|g" {} +
+          find ./k8s -type f -name "*.yaml" -exec sed -i "s|__IMAGE_TAG__|${{ env.IMAGE_TAG }}|g" {} +
+          echo "✅ Placeholders replaced!"
 
-    # 7. Faz o deploy da aplicação no AKS
-    - name: 'Deploy to AKS'
-      run: |
-        kubectl create secret generic api-secrets \
-          --from-literal=ConnectionStrings__Default='${{ secrets.DB_CONNECTION_STRING }}' \
-          --from-literal=AZURE_STORAGE_CONNECTION_STRING='${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}' \
-          --dry-run=client -o yaml | kubectl apply -f -
+      # 9. Aplica os manifestos no AKS
+      - name: 'Deploy to AKS'
+        run: |
+          echo "🚀 Deploying to AKS..."
+          kubectl apply -f k8s/
+          echo "✅ Deployment complete!"
 
-        find ./k8s -type f -name "*.yaml" -exec sed -i 's|__ACR_LOGIN_SERVER__|${{ secrets.ACR_LOGIN_SERVER }}|g' {} +
-        find ./k8s -type f -name "*.yaml" -exec sed -i 's|__IMAGE_TAG__|${{ github.sha }}|g' {} +
-        
-        kubectl apply -f k8s/
+      # 10. Verifica o status do deployment
+      - name: 'Verify deployment status'
+        run: |
+          echo "🔍 Checking deployment status..."
+          kubectl rollout status deployment/api-deployment-tc --timeout=5m
+          echo "✅ Deployment is healthy!"
+          
+          echo "📊 Current pods:"
+          kubectl get pods -l app=api-tc
+          
+          echo "🌐 Service status:"
+          kubectl get svc api-service-tc
+          
+          echo "🔗 Ingress status:"
+          kubectl get ingress api-ingress
+
+      # 11. Logout do Azure
+      - name: 'Azure Logout'
+        if: always()
+        run: |
+          az logout
+          echo "✅ Logged out from Azure"
