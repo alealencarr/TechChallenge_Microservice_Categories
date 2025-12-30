@@ -1,5 +1,4 @@
 ﻿using Application.Gateways;
-using Application.Interfaces.Services;
 
 namespace Application.UseCases.Categories
 {

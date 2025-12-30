@@ -1,6 +1,4 @@
-﻿using Infrastructure.DbModels.ProductModelsAggregate;
-
-namespace Infrastructure.DbModels
+﻿namespace Infrastructure.DbModels
 {
     public class CategorieDbModel
     {
@@ -15,12 +13,12 @@ namespace Infrastructure.DbModels
         }
 
         public DateTime CreatedAt { get; private set; }
- 
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
         public bool IsEditavel { get; set; } = false;
-        public ICollection<ProductDbModel> Products { get; set; } = new List<ProductDbModel>();        
+        //public ICollection<ProductDbModel> Products { get; set; } = new List<ProductDbModel>();
     }
 }

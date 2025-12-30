@@ -26,10 +26,10 @@ namespace Infrastructure.ModelsConfiguration
             
 
             // Relação 1:N Categorie -> Products
-            entity.HasMany(x => x.Products)
-                .WithOne(p => p.Categorie)
-                .HasForeignKey(p => p.CategorieId)
-                .OnDelete(DeleteBehavior.Restrict); // evitar cascade delete
+            //entity.HasMany(x => x.Products)
+            //    .WithOne(p => p.Categorie)
+            //    .HasForeignKey(p => p.CategorieId)
+            //    .OnDelete(DeleteBehavior.Restrict); // evitar cascade delete
         }
     }
 }

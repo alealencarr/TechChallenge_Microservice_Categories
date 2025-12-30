@@ -1,9 +1,7 @@
 ﻿using Application.Gateways;
 using Application.Interfaces.DataSources;
 using Application.Presenter.Categories;
-using Application.Presenter.Products;
 using Application.UseCases.Categories;
-using Application.UseCases.Products;
 using Shared.DTO.Categorie.Output;
 using Shared.DTO.Categorie.Request;
 using Shared.Result;
@@ -19,7 +17,7 @@ namespace Application.Controllers.Categories
         }
 
         public async Task<ICommandResult> DeleteCategorie(Guid id)
-        { 
+        {
             CategoriePresenter categoriePresenter = new("Categoria excluida!");
 
             try
@@ -37,7 +35,7 @@ namespace Application.Controllers.Categories
                 return categoriePresenter.Error<ICommandResult>(ex.Message);
             }
         }
-        
+
         public async Task<ICommandResult<CategorieOutputDto>> UpdateCategorie(CategorieRequestDto categorieRequestDto, Guid id)
         {
             CategoriePresenter categoriePresenter = new("Categoria atualizada!");

@@ -1,6 +1,5 @@
 ﻿using Application.Gateways;
 using Domain.Entities;
-using Domain.ValueObjects;
 using Shared.DTO.Categorie.Request;
 
 namespace Application.UseCases.Categories
@@ -29,7 +28,7 @@ namespace Application.UseCases.Categories
                     throw new Exception($"Error: Categorie not find by Id.");
 
                 categorieExists.Name = categorie.Name;
-                categorieExists.IsEditavel = categorie.IsEditavel;               
+                categorieExists.IsEditavel = categorie.IsEditavel;
 
                 await _gateway.UpdateCategorie(categorieExists);
 
