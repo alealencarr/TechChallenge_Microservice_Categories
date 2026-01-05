@@ -17,8 +17,6 @@
         public Guid Id { get; set; }
 
         public string Name { get; set; }
-
         public bool IsEditavel { get; set; } = false;
-        //public ICollection<ProductDbModel> Products { get; set; } = new List<ProductDbModel>();
     }
 }

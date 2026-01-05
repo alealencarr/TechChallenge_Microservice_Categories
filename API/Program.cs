@@ -7,7 +7,7 @@ Log.Logger = LogExtensions.ConfigureLog();
 
 try
 {
-    Log.Information("Iniciando aplica��o...");
+    Log.Information("Iniciando aplicação...");
 
     var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +23,12 @@ try
 
     app.RegisterPipeline();
     app.AddHealthChecks();
-    app.MapGet("/", () => Results.Ok("TechChallenge API - Running"));
+    //app.MapGet("/", () => Results.Ok("TechChallenge API [Categories] - Running"));
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Aplica��o terminou inesperadamente");
+    Log.Fatal(ex, "Aplicação terminou inesperadamente");
 }
 finally
 {

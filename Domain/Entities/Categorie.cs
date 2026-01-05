@@ -16,17 +16,15 @@
             CreatedAt = DateTime.Now;
             IsEditavel = isEditavel;
         }
+        public Categorie() { }
 
         public DateTime CreatedAt { get; private set; }
-        public Categorie() { }
 
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
         public bool IsEditavel { get; set; }
-
-        //public ICollection<Product> Produtos { get; set; } = new List<Product>();
 
         public bool IsLanche()
         {

@@ -23,13 +23,7 @@ namespace Infrastructure.ModelsConfiguration
                 .IsRequired();
 
             entity.Property(x => x.IsEditavel).HasDefaultValue(false);
-            
-
-            // Relação 1:N Categorie -> Products
-            //entity.HasMany(x => x.Products)
-            //    .WithOne(p => p.Categorie)
-            //    .HasForeignKey(p => p.CategorieId)
-            //    .OnDelete(DeleteBehavior.Restrict); // evitar cascade delete
+  
         }
     }
 }

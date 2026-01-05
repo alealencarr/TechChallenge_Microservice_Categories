@@ -18,6 +18,8 @@ namespace Infrastructure.Persistence
         {
             await SeedCategories();
 
+            if (_seedInDb)
+                await _context.SaveChangesAsync();
         }
 
 
