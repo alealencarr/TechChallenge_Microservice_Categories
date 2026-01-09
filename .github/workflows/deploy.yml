@@ -83,7 +83,8 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" \
-            /d:sonar.coverage.exclusions="**/*Tests*/**,**/Program.cs,**/Migrations/**"
+            /d:sonar.coverage.exclusions="**/Migrations/**,**/DataSources/**,**/DbModels/**,**/DbContexts/**,**/*DependencyInjection*,**/*DataSeeder*,**/DTO/**,**/Program.cs,**/Startup.cs" \
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,**/*.Designer.cs"
           
           dotnet build --no-restore --configuration Release
           
@@ -164,4 +165,4 @@ jobs:
 
       - name: 'Azure Logout'
         if: always()
-        run: az logout 
+        run: az logout
