@@ -1,47 +1,42 @@
 ﻿using Infrastructure.DbContexts;
 using Infrastructure.DbModels;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace Infrastructure.Persistence
 {
     public class DataSeeder
     {
+        private readonly IMongoCollection<CategorieDbModel> _categories;
 
-        private readonly AppDbContext _context;
-        private bool _seedInDb = false;
         public DataSeeder(AppDbContext context)
         {
-            _context = context;
+            _categories = context.Categories;
         }
 
         public async Task Initialize()
         {
             await SeedCategories();
-
-            if (_seedInDb)
-                await _context.SaveChangesAsync();
         }
-
 
         private async Task SeedCategories()
         {
-            var categoriesDb = await _context.Categorie.FirstOrDefaultAsync();
+            var existingCategorie = await _categories
+                .Find(_ => true)
+                .Limit(1)
+                .FirstOrDefaultAsync();
 
-            if (categoriesDb is null)
+            if (existingCategorie is null)
             {
                 var categoriesMock = new List<CategorieDbModel>()
                 {
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000001"), "Lanche",true),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000002"), "Acompanhamento",false),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000003"), "Bebida",false),
-                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000004"), "Sobremesa",false)
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000001"), "Lanche", true),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000002"), "Acompanhamento", false),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000003"), "Bebida", false),
+                    new CategorieDbModel(Guid.Parse("00000000-0000-0000-0000-000000000004"), "Sobremesa", false)
                 };
 
-                await _context.Categorie.AddRangeAsync(categoriesMock);
-                _seedInDb = true;
+                await _categories.InsertManyAsync(categoriesMock);
             }
         }
-
-
     }
 }
