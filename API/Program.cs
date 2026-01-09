@@ -15,15 +15,15 @@ try
     builder.Services
            .AddPresentation(builder.Configuration)
            .AddInfrastructure(builder.Configuration)
-            .AddHealthChecks().AddHealthApi().AddHealthDb(builder.Configuration);
+            .AddHealthChecks().AddHealthApi(); 
 
     var app = builder.Build();
 
     await app.InitializeApp(Log.Logger);
 
     app.RegisterPipeline();
-    app.AddHealthChecks();
-    //app.MapGet("/", () => Results.Ok("TechChallenge API [Categories] - Running"));
+    app.AddHealthChecks(); ;
+
     app.Run();
 }
 catch (Exception ex)
