@@ -6,7 +6,7 @@ data:
   ASPNETCORE_ENVIRONMENT: "Production"
   Logging__LogLevel__Default: "Information"
   Logging__LogLevel__Microsoft: "Warning"
-  # MongoDB configs (valores não-sensíveis)
+
   MongoDb__DatabaseName: "CategoriesDB"
 ---
 apiVersion: apps/v1
@@ -40,13 +40,13 @@ spec:
               memory: "512Mi"
           livenessProbe:
             httpGet:
-              path: /health
+              path: /categories/health
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /health
+              path: /categories/health
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
