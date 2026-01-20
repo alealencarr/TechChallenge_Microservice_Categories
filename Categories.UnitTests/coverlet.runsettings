@@ -4,7 +4,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
-          <Format>cobertura</Format>
+          <Format>opencover</Format>
           <Exclude>
 			  [Infrastructure]Infrastructure.Migrations.*,
 			  [Infrastructure]Infrastructure.DataSources.*,
