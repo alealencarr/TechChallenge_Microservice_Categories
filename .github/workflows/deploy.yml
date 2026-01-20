@@ -59,6 +59,11 @@ jobs:
           echo "📁 Listing TestResults folder:"
           find ./TestResults -name "*.xml" -type f
           
+      - name: 'Debug runsettings'
+        run: |
+          echo "📄 Conteúdo do coverlet.runsettings:"
+          cat ./Categories.UnitTests/coverlet.runsettings
+          
       - name: 'Setup Java'
         uses: actions/setup-java@v4
         with:

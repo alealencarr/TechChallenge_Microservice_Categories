@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Infrastructure.DbContexts;
-
+[ExcludeFromCodeCoverage]
 public class AppDbContext  
 {
 
