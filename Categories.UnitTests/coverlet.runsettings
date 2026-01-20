@@ -5,18 +5,7 @@
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
           <Format>opencover</Format>
-          <Exclude>
-			  [Infrastructure]Infrastructure.Migrations.*,
-			  [Infrastructure]Infrastructure.DataSources.*,
-			  [Infrastructure]Infrastructure.DbModels.*,
-			  [Infrastructure]Infrastructure.DbContexts.*,
-			  [Infrastructure]*DependencyInjection*,
-			  [Infrastructure]*DataSeeder*,
-			  [Shared]Shared.DTO.*,
-			  [API]*,
-			  [*]*Program*,
-			  [*]*Startup*
-		  </Exclude>
+          <Exclude>[Infrastructure]Infrastructure.Migrations.*,[Infrastructure]Infrastructure.DataSources.*,[Infrastructure]Infrastructure.DbModels.*,[Infrastructure]Infrastructure.DbContexts.*,[Infrastructure]*DependencyInjection*,[Infrastructure]*DataSeeder*,[Shared]Shared.DTO.*,[API]*,[*]*Program*,[*]*Startup*</Exclude>
         </Configuration>
       </DataCollector>
     </DataCollectors>
