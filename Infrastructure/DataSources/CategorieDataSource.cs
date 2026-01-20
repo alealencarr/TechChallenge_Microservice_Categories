@@ -5,11 +5,13 @@ using Infrastructure.DbModels;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using Shared.DTO.Categorie.Input;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 
 namespace Infrastructure.DataSources
 {
+    [ExcludeFromCodeCoverage]
     public class CategorieDataSource : ICategorieDataSource
     {
         private readonly IMongoCollection<CategorieDbModel> _categories;

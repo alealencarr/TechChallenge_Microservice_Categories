@@ -1,8 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.DbModels
 {
+    [ExcludeFromCodeCoverage]
     public class CategorieDbModel
     {
         [BsonId]

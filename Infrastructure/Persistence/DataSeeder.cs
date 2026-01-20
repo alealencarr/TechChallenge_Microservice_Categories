@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DbContexts;
 using Infrastructure.DbModels;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infrastructure.Persistence
 {
+    [ExcludeFromCodeCoverage]
     public class DataSeeder
     {
         private readonly IMongoCollection<CategorieDbModel> _categories;
