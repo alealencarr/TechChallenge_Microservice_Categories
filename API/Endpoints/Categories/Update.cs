@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.DTO.Categorie.Output;
 using Shared.DTO.Categorie.Request;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Categories
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class Update : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)

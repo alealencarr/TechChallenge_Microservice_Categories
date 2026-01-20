@@ -5,9 +5,11 @@ using Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Endpoints.Categories
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class Delete : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)

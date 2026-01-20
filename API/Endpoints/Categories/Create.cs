@@ -11,6 +11,7 @@ using Shared.Result;
 
 namespace API.Endpoints.Categories
 {
+    [ExcludeFromCodeCoverage]
     internal sealed class Create : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
