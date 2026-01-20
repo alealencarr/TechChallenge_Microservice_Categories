@@ -85,9 +85,9 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" \
             /d:sonar.coverage.exclusions="**/Migrations/**,**/DataSources/**,**/DbModels/**,**/DbContexts/**,**/*DependencyInjection*,**/*DataSeeder*,**/DTO/**,**/Program.cs,**/Startup.cs" \
-            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,**/*.Designer.cs"
-            /d:sonar.qualitygate.wait=true 
-            
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,**/*.Designer.cs" \
+            /d:sonar.qualitygate.wait=true
+          
           dotnet build --no-restore --configuration Release
           
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
