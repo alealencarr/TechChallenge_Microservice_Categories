@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace API.Extensions.HealthCheck;
 public class ApiHealthCheck : IHealthCheck
 {
+    [ExcludeFromCodeCoverage]
+
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
         CancellationToken cancellationToken = default)
