@@ -8,11 +8,17 @@ COPY ["API/API.csproj", "API.csproj"]
 
 
 RUN dotnet restore "API.csproj"
+   
  
+
+
 COPY . .
 WORKDIR "/src"
 
 RUN dotnet build "API/API.csproj" -c Release -o /app/build
+
+
+
 
 FROM build AS publish
 
